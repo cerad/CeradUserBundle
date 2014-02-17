@@ -1,0 +1,25 @@
+{
+    "name":        "cerad/user-bundle",
+    "type":        "symfony-bundle",
+    "description": "Symfony Cerad User Bundle",
+    "keywords":    ["cerad","zayso"],
+    "homepage":    "http://github.com/cerad/UserBundle",
+    "license":     "MIT",
+    "authors": [
+        {
+            "name": "Art Hundiak",
+            "email": "ahundiak@gmail.com",
+            "homepage": "http://zayso.org",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "cerad/core-bundle": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { "Cerad\\Bundle\\UserBundle\\": "" }
+    },
+    "target-dir": "Cerad/Bundle/UserBundle"
+}

@@ -7,10 +7,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
-use Symfony\Component\EventDispatcher\Event as PersonFindEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Cerad\Bundle\PersonBundle\PersonEvents;
+use Cerad\Bundle\CoreBundle\Events\PersonEvents;
+
+use Cerad\Bundle\CoreBundle\Event\FindPersonEvent;
 
 use Cerad\Bundle\UserBundle\Model\UserManagerInterface;
 
@@ -39,23 +40,22 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         // The basic way
-        $user1 = $this->userManager->findUserByUsernameOrEmail($username);
-        if ($user1) return $user1;
+        $user = $this->userManager->findUserByUsernameOrEmail($username);
+        if ($user) return $user;
         
         // Check for social network identifiers
         
         // See if a fed person exists
-        $event = new PersonFindEvent;
-        $event->fedKey = $username;
-        $event->person = null;
+        $findPersonEvent = new FindPersonEvent($username);
         
-        $this->dispatcher->dispatch(PersonEvents::FindPersonByFedKey,$event);
+        $this->dispatcher->dispatch(PersonEvents::FindPerson,$findPersonEvent);
         
-        $person = $event->person;
+        $person = $findPersonEvent->getPerson();
+        
         if ($person)
         {
-            $user = $this->userManager->findUserByPersonGuid($person->getGuid());
-            if ($user) return $user;
+            $userPerson = $this->userManager->findUserByPersonGuid($person->getGuid());
+            if ($userPerson) return $userPerson;
         }
         
         // Bail

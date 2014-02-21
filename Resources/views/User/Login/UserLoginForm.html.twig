@@ -1,0 +1,18 @@
+{{ form_start(form) }}
+<fieldset><legend><span>Login To Account</span></legend>
+  {{ form_row(form.username)   }}
+  {{ form_row(form.password)   }}
+<div style="display:none;">{{ form_row(form.rememberMe) }}</div>
+</fieldset>
+<fieldset>
+  <div class="controls">
+    <span>
+      <a href="{{ path('cerad_user__user_password__reset_request') }}" />Forgot password?</a>
+    </span>
+    {{ form_widget(form.login) }}
+  </div>
+</fieldset>
+{{ form_rest(form) }}
+{{ form_end (form) }}
+
+

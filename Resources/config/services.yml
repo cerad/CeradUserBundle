@@ -7,6 +7,9 @@ services:
     # Security stuff
     cerad_user.entity_manager.doctrine:
         alias: doctrine.orm.default_entity_manager
+        
+    cerad_user__user_entity_manager__doctrine:
+        alias: doctrine.orm.default_entity_manager
 
     cerad_user.user_repository.doctrine:
         class:  Cerad\Bundle\UserBundle\Entity\UserRepository
@@ -17,6 +20,9 @@ services:
             
     cerad_user.user_repository:
         alias: cerad_user.user_repository.doctrine
+        
+    cerad_user__user_repository:
+        alias: cerad_user.user_repository.doctrine
             
     cerad_user.user_manager.doctrine:
         class:  Cerad\Bundle\UserBundle\Entity\UserManager
@@ -25,6 +31,9 @@ services:
             - '@cerad_user.user_repository.doctrine'
             
     cerad_user.user_manager:
+        alias: cerad_user.user_manager.doctrine
+        
+    cerad_user__user_manager:
         alias: cerad_user.user_manager.doctrine
         
     cerad_user.user_provider.doctrine:
@@ -37,10 +46,16 @@ services:
     cerad_user.user_provider:
         alias: cerad_user.user_provider.doctrine
         
+    cerad_user__user_provider:
+        alias: cerad_user.user_provider.doctrine
+        
     cerad_user.user_encoder:
         class:  Cerad\Bundle\UserBundle\Security\UserEncoder
         arguments:
             - '%cerad_user_master_password%'
+            
+    cerad_user__user_encoder:
+        alias: cerad_user.user_encoder
             
 # =============================================================
 # Allows injecting the current user or the current user person

@@ -1,0 +1,24 @@
+parameters:
+  
+services:
+  
+# =======================================================================
+# UserLogin
+#
+    cerad_user__user__login_model_factory:
+        class: Cerad\Bundle\UserBundle\Action\User\Login\UserLoginModel
+        calls:
+             - [setDispatcher,['@event_dispatcher']]
+
+    cerad_user__user__login_form_factory:
+        class: Cerad\Bundle\UserBundle\Action\User\Login\UserLoginFormFactory
+        calls:
+             - [setRouter,      ['@router']]
+             - [setFormFactory, ['@form.factory']]
+             
+    cerad_user__user__login_controller:
+        class: Cerad\Bundle\UserBundle\Action\User\Login\UserLoginController
+        calls:
+             - [setRouter,     ['@router']]
+             - [setTemplating, ['@templating']]
+  

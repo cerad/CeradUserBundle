@@ -1,3 +1,39 @@
-cerad_user_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: CeradUserBundle:Default:index }
+cerad_user__user__create:
+  path: /user/create
+  
+cerad_user__user__update:
+  path: /user/update
+  defaults:
+    _role: USER_ROLE
+  
+cerad_user__user__login:
+  path: /user/login
+  defaults:
+    _model:      cerad_user__user__login_model_factory
+    _form:       cerad_user__user__login_form_factory
+    _controller: cerad_user__user__login_controller:action
+    _template: '@CeradUser\User\Login\UserLoginIndex.html.twig'
+    
+cerad_user__user__login_form:
+  path: /user/login-form
+  defaults:
+    _model:      cerad_user__user__login_model_factory
+    _form:       cerad_user__user__login_form_factory
+    _controller: cerad_user__user__login_controller:action
+    _template: '@CeradUser\User\Login\UserLoginForm.html.twig'
+    
+cerad_user__user__login_check:
+  path: /user/login-check
+  
+cerad_user__user__logout:
+  path: /user/logout
+  
+cerad_user__user_password__update:
+  path: /user-password/update
+  
+cerad_user__user_password__reset_request:
+  path: /user-password/reset-request
+  
+cerad_user__user_password__reset_requested:
+  path: /user-password/reset-requested
+  

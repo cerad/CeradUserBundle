@@ -22,3 +22,46 @@ services:
              - [setRouter,     ['@router']]
              - [setTemplating, ['@templating']]
   
+# =======================================================================
+# Password Request
+#
+    cerad_user__user_password__reset_request_model_factory:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestModelFactory
+        calls:
+             - [setDispatcher,['@event_dispatcher']]
+        arguments:
+             - '@mailer'
+             - '$cerad_user__user_provider'
+          
+    cerad_user__user_password__reset_request_form_factory:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestFormFactory
+        calls:
+             - [setRouter,      ['@router']]
+             - [setFormFactory, ['@form.factory']]
+             
+    cerad_user__user_password__reset_request_controller:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestController
+        calls:
+             - [setRouter,     ['@router']]
+             - [setTemplating, ['@templating']]
+  
+# =======================================================================
+# Password Requested
+#
+    cerad_user__user_password__reset_requested_model_factory:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested\ResetRequestedModel
+        calls:
+             - [setDispatcher,['@event_dispatcher']]
+             
+    cerad_user__user_password__reset_requested_form_factory:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested\ResetRequestedFormFactory
+        calls:
+             - [setRouter,      ['@router']]
+             - [setFormFactory, ['@form.factory']]
+             
+    cerad_user__user_password__reset_requested_controller:
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested\ResetRequestedController
+        calls:
+             - [setRouter,     ['@router']]
+             - [setTemplating, ['@templating']]
+  

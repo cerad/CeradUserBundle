@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+<fieldset><legend><span>Account to Reset</span></legend>
+  {{ form_row(form.username)    }}
+</fieldset>
+<fieldset>
+  <div class="controls">
+    <span><a href="{{ path('cerad_user__welcome') }}">Return to Welcome.</a></span>
+    {{ form_widget(form.reset) }}
+  </div>
+</fieldset>
+{{ form_rest(form) }}
+{{ form_end (form) }}

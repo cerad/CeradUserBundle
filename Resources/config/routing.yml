@@ -12,7 +12,7 @@ cerad_user__user__login:
     _model:      cerad_user__user__login_model_factory
     _form:       cerad_user__user__login_form_factory
     _controller: cerad_user__user__login_controller:action
-    _template: '@CeradUser\User\Login\UserLoginIndex.html.twig'
+    _template: '@CeradUser\User\Login\UserLoginPage.html.twig'
     
 cerad_user__user__login_form:
   path: /user/login-form
@@ -27,13 +27,30 @@ cerad_user__user__login_check:
   
 cerad_user__user__logout:
   path: /user/logout
-  
-cerad_user__user_password__update:
-  path: /user-password/update
-  
-cerad_user__user_password__reset_request:
-  path: /user-password/reset-request
-  
+
 cerad_user__user_password__reset_requested:
-  path: /user-password/reset-requested
+  path: /user/{_user}/password-reset-requested/{token}
+  defaults:
+    _model:      cerad_user__user_password__reset_requested_model_factory
+    _form:       cerad_user__user_password__reset_requested_form_factory
+    _controller: cerad_user__user_password__reset_requested_controller:action
+    _template: '@CeradUser\UserPassword\ResetRequested\ResetRequestedPage.html.twig'
+    token: 0
+    
+cerad_user__user_password__reset_request:
+  path: /user/password-reset-request
+  defaults:
+    _model:      cerad_user__user_password__reset_request_model_factory
+    _form:       cerad_user__user_password__reset_request_form_factory
+    _controller: cerad_user__user_password__reset_request_controller:action
+    _template: '@CeradUser\UserPassword\ResetRequest\ResetRequestPage.html.twig'
+
+# ======================================================
+# Designed to be overwritten
+# maybe cerad_welcome and cerad_home
+cerad_user__welcome:
+  path: /welcome
   
+cerad_user__home:
+  path: /home
+

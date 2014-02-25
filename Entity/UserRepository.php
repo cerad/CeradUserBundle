@@ -25,6 +25,11 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         if (!$id) return null;
         return parent::find($id);
     }
+    public function findUser($id)
+    {
+        if (!$id) return null;
+        return parent::find($id);
+    }
     /* ==========================================================
      * Allow creating objects via static methods
      */

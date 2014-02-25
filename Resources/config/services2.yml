@@ -1,5 +1,6 @@
 parameters:
-  
+    cerad_user__firewall_name: main
+    
 services:
   
 # =======================================================================
@@ -23,15 +24,14 @@ services:
              - [setTemplating, ['@templating']]
   
 # =======================================================================
-# Password Request
+# Password Reset Request
 #
     cerad_user__user_password__reset_request_model_factory:
-        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestModelFactory
+        class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestModel
         calls:
              - [setDispatcher,['@event_dispatcher']]
         arguments:
-             - '@mailer'
-             - '$cerad_user__user_provider'
+             - '@cerad_user__user_provider'
           
     cerad_user__user_password__reset_request_form_factory:
         class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest\ResetRequestFormFactory
@@ -46,12 +46,15 @@ services:
              - [setTemplating, ['@templating']]
   
 # =======================================================================
-# Password Requested
+# Password Reset Requested
 #
     cerad_user__user_password__reset_requested_model_factory:
         class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested\ResetRequestedModel
         calls:
              - [setDispatcher,['@event_dispatcher']]
+        arguments:
+             - '@security.context'
+             - '@cerad_user__user_manager'
              
     cerad_user__user_password__reset_requested_form_factory:
         class: Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested\ResetRequestedFormFactory

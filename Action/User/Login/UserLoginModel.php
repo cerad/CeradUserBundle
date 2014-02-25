@@ -3,7 +3,8 @@
 namespace Cerad\Bundle\UserBundle\Action\User\Login;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+
+use Cerad\Bundle\CoreBundle\Event\User\GetAuthInfoEvent;
 
 use Cerad\Bundle\CoreBundle\Action\ActionModelFactory;
 
@@ -17,25 +18,13 @@ class UserLoginModel extends ActionModelFactory
     // Kind of messy
     public function create(Request $request)
     {
-        // Check request for error
-        $contextError = $error = $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-        $this->error = $contextError ? $contextError->getMessage() : null;
+        $event = new GetAuthInfoEvent($request);
+        $this->dispatcher->dispatch(GetAuthInfoEvent::NAME,$event);
         
-        // Then look in session
-        $session = $request->getSession();
-        if (!$session) return $this;
+        $this->error    = $event->error;
+        $this->username = $event->username;
         
-        // Pull user name
-        $this->username = $session->get(SecurityContextInterface::LAST_USERNAME);
-        
-        // Check for error in session
-        if (!$contextError && $session->has(SecurityContextInterface::AUTHENTICATION_ERROR)) 
-        {
-            $sessionError = $session->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-            $session->remove             (SecurityContextInterface::AUTHENTICATION_ERROR);
-            
-            $this->error = $sessionError ? $sessionError->getMessage() : null;
-        }
         return $this;
+        
     }
 }

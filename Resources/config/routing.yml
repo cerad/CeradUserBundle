@@ -29,13 +29,13 @@ cerad_user__user__logout:
   path: /user/logout
 
 cerad_user__user_password__reset_requested:
-  path: /user/{_user}/password-reset-requested/{token}
+  path: /user/{_userFind}/password-reset-requested/{token}
   defaults:
     _model:      cerad_user__user_password__reset_requested_model_factory
     _form:       cerad_user__user_password__reset_requested_form_factory
     _controller: cerad_user__user_password__reset_requested_controller:action
     _template: '@CeradUser\UserPassword\ResetRequested\ResetRequestedPage.html.twig'
-    token: 0
+    token: null
     
 cerad_user__user_password__reset_request:
   path: /user/password-reset-request

@@ -1,25 +1,36 @@
 <?php
 
-namespace Cerad\Bundle\UserBundle\Action\User\Login;
+namespace Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest;
 
-// Symfony\Component\HttpFoundation\Request;
-// Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-use Cerad\Bundle\UserBundle\Action\User\Login\UserLoginModel;
+use Cerad\Bundle\CoreBundle\Event\User\GetAuthInfoEvent;
+use Cerad\Bundle\CoreBundle\Event\User\ResetPasswordRequestEvent;
 
-class ResetRequestModel extends UserLoginModel // Share the username nonsense
+use Cerad\Bundle\CoreBundle\Action\ActionModelFactory;
+
+class ResetRequestModel extends ActionModelFactory
 {
     public $user;
     public $username; // From login model
-    public $userToken;
+    public $token;
+    public $error;
     
-    protected $mailer;
     protected $userProvider;
     
-    public function __construct($mailer,$userProvider)
+    public function __construct($userProvider)
     {
-        $this->mailer = $mailer;
         $this->userProvider = $userProvider;
+    }
+    public function create(Request $request)
+    {
+        $event = new GetAuthInfoEvent($request);
+        $this->dispatcher->dispatch(GetAuthInfoEvent::NAME,$event);
+        
+        $this->error    = $event->error;
+        $this->username = $event->username;
+        
+        return $this;
     }
     public function process()
     {
@@ -31,22 +42,10 @@ class ResetRequestModel extends UserLoginModel // Share the username nonsense
         
         $this->userProvider->getUserManager()->updateUser($user);
         
-        $this->user      = $user;
-        $this->userToken = $token;
+        $this->user  = $user;
+        $this->token = $token;
         
-        // Any real need to make this a listener? Maybe.
-        $this->sendEmail();
-    }
-    protected function sendEmail()
-    {
-        $message = \Swift_Message::newInstance();
-        $message->setSubject($emailSubject);
-        $message->setBody   ($emailBody);
-        $message->setFrom(array($fromEmail  => $fromName ));
-        $message->setBcc (array($adminEmail => $adminName));
-        $message->setTo  (array($userEmail  => $userName ));
-
-        $this->mailer->send($message);
-         
+        $event = new ResetPasswordRequestEvent($user,$token);
+        $this->dispatcher->dispatch(ResetPasswordRequestEvent::NAME,$event);         
     }
 }

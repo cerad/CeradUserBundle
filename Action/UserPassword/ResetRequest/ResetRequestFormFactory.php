@@ -12,11 +12,13 @@ class ResetRequestFormFactory extends ActionFormFactory
 {
     public function create(Request $request, $model)
     {
+        $actionRoute = $request->attributes->get('_route');
+        
         $formOptions = array(
             'cascade_validation' => true,
           //'intention' => 'authenticate',
             'method' => 'POST',
-            'action' => $this->generateUrl('cerad_user__user__login_check'),
+            'action' => $this->generateUrl($actionRoute),
             'attr'   => array('class' => 'cerad_common_form1'),
         );
         $constraintOptions = array();

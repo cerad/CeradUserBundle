@@ -1,12 +1,12 @@
 <?php
 
-namespace Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequest;
+namespace Cerad\Bundle\UserBundle\Action\UserPassword\ResetRequested;
 
 use Symfony\Component\HttpFoundation\Request;
 
 use Cerad\Bundle\CoreBundle\Action\ActionController;
 
-class ResetRequestController extends ActionController
+class ResetRequestedController extends ActionController
 {
     public function action(Request $request, $model, $form)
     {   
@@ -14,12 +14,9 @@ class ResetRequestController extends ActionController
 
         if ($form->isValid()) 
         {   
-            $model->process();
+            $model->process($request);
             
-            return $this->redirectResponse(
-                'cerad_user__user_password__reset_requested', 
-                 array('_userFind' => $model->user->getId())
-            );
+            return $this->redirectResponse('cerad_user__welcome');
         }
         // Render
         $tplData = array();

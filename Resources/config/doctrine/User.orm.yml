@@ -1,7 +1,7 @@
 Cerad\Bundle\UserBundle\Entity\User:
     type:  entity
     table: users
-    changeTrackingPolicy: NOTIFY
+   #changeTrackingPolicy: NOTIFY
     repositoryClass: Cerad\Bundle\UserBundle\Entity\UserRepository
     
     id:

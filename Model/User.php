@@ -4,7 +4,7 @@ namespace Cerad\Bundle\UserBundle\Model;
 use Cerad\Bundle\UserBundle\Model\UserInterface as CeradUserInterface;
 //  FOS         \UserBundle\Model\UserInterface as FOSUserInterface;
 
-class User extends BaseModel implements CeradUserInterface, \Serializable //, FOSUserInterface
+class User implements CeradUserInterface, \Serializable //, FOSUserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER'; // From FOSUserInterface
     
@@ -26,7 +26,6 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
     
     // Wants to be a value object
     protected $personGuid;    // 36 char string
-  //protected $personFedId;   // AYSOV12341234
     protected $personStatus    = 'Active';
     protected $personVerified  = 'No';
     protected $personConfirmed = false;
@@ -71,7 +70,7 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
     /* =====================================================
      * Basic account getter/setters
      */
-  //public function getId()                { return $this->id;                }
+    public function getId()                { return $this->id;                }
     public function getSalt()              { return $this->salt;              }
     public function getEmail()             { return $this->email;             }
     public function getEmailCanonical()    { return $this->emailCanonical;    }
@@ -82,30 +81,26 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
     public function getPasswordPlain()     { return $this->passwordPlain;     }
     public function getPlainPassword()     { return $this->passwordPlain;     }
     
-  //public function setId               ($value) { $this->onPropertySet('id',               $value); }
-    public function setSalt             ($value) { $this->onPropertySet('salt',             $value); }
-    public function setEmail            ($value) { $this->onPropertySet('email',            $value); }
-    public function setEmailCanonical   ($value) { $this->onPropertySet('emailCanonical',   $value); }
-    public function setUsername         ($value) { $this->onPropertySet('username',         $value); }
-    public function setUsernameCanonical($value) { $this->onPropertySet('usernameCanonical',$value); }
-    public function setPassword         ($value) { $this->onPropertySet('password',         $value); }
-    public function setPasswordHint     ($value) { $this->onPropertySet('passwordHint',     $value); }
-    public function setPasswordPlain    ($value) { $this->onPropertySet('passwordPlain',    $value); }
-    public function setPlainPassword    ($value) { $this->onPropertySet('passwordPlain',    $value); }
+    public function setSalt             ($value) { $this->salt              = $value; }
+    public function setEmail            ($value) { $this->email             = $value; }
+    public function setEmailCanonical   ($value) { $this->emailCanonical    = $value; }
+    public function setUsername         ($value) { $this->username          = $value; }
+    public function setUsernameCanonical($value) { $this->usernameCanonical = $value; }
+    public function setPassword         ($value) { $this->password          = $value; }
+    public function setPasswordHint     ($value) { $this->passwordHint      = $value; }
+    public function setPasswordPlain    ($value) { $this->passwordPlain     = $value; }
+    public function setPlainPassword    ($value) { $this->passwordPlain     = $value; }
     
     /* =======================================================
      * My person link
      */
     public function getPersonGuid()     { return $this->personGuid;     }
-  //public function getPersonFedId()    { return $this->personFedId;    }
     public function getPersonStatus()   { return $this->personStatus;   }
     public function getPersonVerified() { return $this->personVerified; }
     
-    public function setName          ($value) { $this->onPropertySet('personName',    $value); }
-    public function setPersonGuid    ($value) { $this->onPropertySet('personGuid',    $value); }
-  //public function setPersonFedId   ($value) { $this->onPropertySet('personFedId',   $value); }
-    public function setPersonStatus  ($value) { $this->onPropertySet('personStatus',  $value); }
-    public function setPersonVerified($value) { $this->onPropertySet('personVerified',$value); }
+    public function setPersonGuid    ($value) { $this->personGuid     = $value; }
+    public function setPersonStatus  ($value) { $this->personStatus   = $value; }
+    public function setPersonVerified($value) { $this->personVerified = $value; }
     
     public function eraseCredentials()
     {
@@ -131,15 +126,12 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
         $roles = $this->getRoles();
         if (in_array($role,$roles)) return;
         
-        $roles[] = $role;
-        
-        $this->onPropertySet('roles',$roles);
+        $this->roles[] = $role;
     }
     public function removeRole($role)
     {
         $roles = $this->getRoles();
-        $roles = array_diff($roles, array($role));
-        $this->onPropertySet('roles',$roles);
+        $this->roles = array_diff($roles, array($role));
     }
     // Account - AdvancedUserInterface
     public function getAccountName()          { return $this->accountName;     }
@@ -150,12 +142,12 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
     public function isAccountNonLocked()      { return !$this->accountLocked;      }
     public function isCredentialsNonExpired() { return !$this->credentialsExpired; }
     
-    public function setEnabled              ($flag) { $this->onPropertySet('accountEnabled',    $flag); }
-    public function setAccountName          ($name) { $this->onPropertySet('accountName',       $name); }
-    public function setAccountEnabled       ($flag) { $this->onPropertySet('accountEnabled',    $flag); }
-    public function setAccountNonExpired    ($flag) { $this->onPropertySet('accountExpired',    $flag); }
-    public function setAccountNonLocked     ($flag) { $this->onPropertySet('accountLocked',     $flag); }
-    public function setCredentialsNonExpired($flag) { $this->onPropertySet('credentialsExpired',$flag); }
+    public function setEnabled              ($flag) { $this->accountEnabled     = $flag; }
+    public function setAccountName          ($name) { $this->accountName        = $name; }
+    public function setAccountEnabled       ($flag) { $this->accountEnabled     = $flag; }
+    public function setAccountNonExpired    ($flag) { $this->accountExpired     = $flag; }
+    public function setAccountNonLocked     ($flag) { $this->accountLocked      = $flag; }
+    public function setCredentialsNonExpired($flag) { $this->credentialsExpired = $flag; }
 
     /* =========================================================================
      * Serialization
@@ -240,7 +232,7 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
             $expires = null;
         }
         
-        $this->onPropertySet('passwordResetToken',$token);
+        $this->passwordResetToken = $token;
         
         $this->setPasswordResetRequestedAt     ($now);
         $this->setPasswordResetRequestExpiresAt($expires);
@@ -252,7 +244,7 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
             $msg = 'User.setPasswordResetRequestedAt only takes DateTime argument';
             throw new \InvalidArgumentException($msg);
         }
-        $this->onPropertySet('passwordResetRequestedAt',$date);
+        $this->passwordResetRequestedAt = $date;
     }
     public function setPasswordResetRequestExpiresAt(\DateTime $date = null)
     {
@@ -261,10 +253,11 @@ class User extends BaseModel implements CeradUserInterface, \Serializable //, FO
             $msg = 'User.setPasswordResetExpiresAt only takes DateTime argument';
             throw new \InvalidArgumentException($msg);
         }
-        $this->onPropertySet('passwordResetRequestExpiresAt',$date);
+        $this->passwordResetRequestExpiresAt = $date;
     }
     /* ================================================
      * Cross connect
+     * TODO: Probably want to remove this
      */
     protected $person;
     public function getPerson() { return $this->person; }

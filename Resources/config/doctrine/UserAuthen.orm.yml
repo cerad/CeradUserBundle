@@ -1,7 +1,7 @@
 Cerad\Bundle\UserBundle\Entity\UserAuthen:
     type:  entity
     table: user_authens
-    changeTrackingPolicy: NOTIFY
+   #changeTrackingPolicy: NOTIFY
     
     id:
         id:
